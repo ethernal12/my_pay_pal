@@ -1,9 +1,11 @@
 from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from typing import Optional
 
+import stripe
+
 from core.domain.denar import DenarnaVrednost, Valuta, Valute
-from core.domain.dogodek import Dogodek
+from core.domain.dogodek import Dogodek, TipDogodka
 from core.domain.uporabnik import Uporabnik
 
 
@@ -13,7 +15,7 @@ class KnjizniVnos:
 	cena: DenarnaVrednost
 	datum: date
 	namen: str
-
+	placano:bool
 
 @dataclass
 class ElementRacuna:
