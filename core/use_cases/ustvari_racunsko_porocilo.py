@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 from datetime import date, timedelta
-
-from core.domain.denar import DenarnaVrednost, Valute
 from core.domain.porocilo import RacunskoPorocilo, DnevnoRacunskoPorocilo, ElementRacuna, KnjizniVnos
 from core.service.knjiga_racunov_service import KnjigaRacunovService
 from core.service.koledar_service import KoledarService
@@ -14,30 +12,24 @@ class Ustvari_racunsko_porocilo(Use_case):
 	_koledar: KoledarService
 
 	def exe(self, zacetek: date, konec: date) -> RacunskoPorocilo:
-		invoices = self._knjiga_racunov.knjizni_vnosi(zacetek=zacetek, konec=konec)
-		dogodki = self._koledar.dogodki(zacetek=zacetek, konec=konec)
+		knjizni_vnosi = self._knjiga_racunov.knjizni_vnosi(zacetek=zacetek, konec=konec)
+		google_dogodki = self._koledar.dogodki(zacetek=zacetek, konec=konec)
 		rp = RacunskoPorocilo(zacetek=zacetek, konec=konec, dnevi=[])
 		for i in range(rp.dolzina.days + 1):
 			elementi = []
 			dd = zacetek + timedelta(days=i)
-			for dogodek in dogodki:
+			for dogodek in google_dogodki:
 				if dogodek.zacetek.date() == dd:
 					element = ElementRacuna(
 						dogodek=dogodek,
 						knjizni_vnos=None
 					)
 					elementi.append(element)
-			for invoice in invoices:
-				if invoice.zacetek.date() == dd:
+			for knjizni_vnos in knjizni_vnosi:
+				if knjizni_vnos.datum.date() == dd:
 					element = ElementRacuna(
 						dogodek=None,
-						knjizni_vnos=KnjizniVnos(
-							placnik=invoice.placnik,
-							cena=DenarnaVrednost(vrednost=invoice.cena, valuta=Valute.euro),
-							datum=invoice.zacetek,
-							namen=invoice.tip.name,
-							placano=invoice.placano
-						)
+						knjizni_vnos=knjizni_vnos
 					)
 					elementi.append(element)
 

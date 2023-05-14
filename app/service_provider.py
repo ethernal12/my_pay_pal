@@ -8,4 +8,8 @@ from app.service.koledar_google import KoledarGoogle
 
 class ServiceProvider(DeclarativeContainer):
 	knjiga_racunov: Provider[KnjigaRacunovStripe] = Singleton(KnjigaRacunovStripe, stripe_api_key=ENV.STRIPE_API_KEY)
-	koledar: Provider[KoledarGoogle] = Singleton(KoledarGoogle, google_api_key=ENV.GOOGLE_API_KEY)
+	koledar: Provider[KoledarGoogle] = Singleton(
+		KoledarGoogle,
+		google_api_key=ENV.GOOGLE_API_KEY,
+		google_email_naslov=ENV.EMAIL
+	)

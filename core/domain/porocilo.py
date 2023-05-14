@@ -1,11 +1,8 @@
 from dataclasses import dataclass
-from datetime import date, timedelta, datetime
+from datetime import date, timedelta
 from typing import Optional
-
-import stripe
-
 from core.domain.denar import DenarnaVrednost, Valuta, Valute
-from core.domain.dogodek import Dogodek, TipDogodka
+from core.domain.dogodek import Dogodek
 from core.domain.uporabnik import Uporabnik
 
 

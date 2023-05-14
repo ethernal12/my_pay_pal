@@ -8,8 +8,8 @@ class GUI:
 	def dobi_invoice(self) -> RacunskoPorocilo:
 		APP.init()
 		service = APP.use_case.ustvari_racunsko_porocilo()
-		zacetek = date(2023, 5, 1)
-		konec = date(2023, 5, 4)
+		zacetek = date(2023, 4, 1)
+		konec = date(2023, 5, 14)
 		rp = service.exe(zacetek=zacetek, konec=konec)
 		return rp
 

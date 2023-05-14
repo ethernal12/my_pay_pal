@@ -18,7 +18,6 @@ class Dogodek:
 	konec: datetime
 	uporabnik: Uporabnik
 	placnik: Uporabnik
-	placano: bool
 
 	@property
 	def dolzina(self) -> timedelta:
