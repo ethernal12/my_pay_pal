@@ -1,7 +1,7 @@
 import logging
 import sys
 from logging.handlers import TimedRotatingFileHandler
-
+from autologging import traced
 from app import ENV
 from app.service_provider import ServiceProvider
 from app.usecase_provider import UseCaseProvider
