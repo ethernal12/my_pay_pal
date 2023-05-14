@@ -17,7 +17,6 @@ class Dogodek:
 	zacetek: datetime
 	konec: datetime
 	uporabnik: Uporabnik
-	placnik: Uporabnik
 
 	@property
 	def dolzina(self) -> timedelta:

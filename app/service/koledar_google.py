@@ -11,6 +11,8 @@ from core.domain.uporabnik import Uporabnik
 from core.service.koledar_service import KoledarService
 
 log = logging.getLogger(__name__)
+
+
 class InformacijeEventa:
 	def __init__(self, name: str, phone: str, email: str, email_placnik: str, cena_instrukcij: str):
 		self.name = name
@@ -43,6 +45,7 @@ class KoledarGoogle(KoledarService):
 					match = acuity_id_pattern.search(string)
 					if match:
 						dobljene_informacije_dogodka = self._dobi_informacije_dogodka(string=string)
+
 						uporabnik = Uporabnik(
 							ime=dobljene_informacije_dogodka.name,
 							priimek=dobljene_informacije_dogodka.name,
@@ -56,8 +59,7 @@ class KoledarGoogle(KoledarService):
 							tip=TipDogodka.INSTRUKCIJE,
 							zacetek=datetime.fromisoformat(event['start']['dateTime']),
 							konec=datetime.fromisoformat(event['end']['dateTime']),
-							uporabnik=uporabnik,
-							placnik=dobljene_informacije_dogodka.email_placnik,
+							uporabnik=uporabnik
 						)
 						dogodki.append(dogodek)
 					else:
