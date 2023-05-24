@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
 		default_start_date = QtCore.QDate(2023, 5, 2)
 		default_end_date = QtCore.QDate(2023, 5, 9)
 
-		self.exit_button = QPushButton("Exit", self.centralwidget)
+		self.exit_button = QPushButton("Izhod", self.centralwidget)
 		self.exit_button.setGeometry(900, 800, 75, 30)
 		self.exit_button.clicked.connect(MainWindow.close)
 
@@ -60,6 +60,7 @@ class Ui_MainWindow(object):
 		self.stripe_tabela.setRowCount(0)
 		self.google_tabela = QtWidgets.QTableWidget(self.centralwidget)
 		self.google_tabela.setGeometry(QtCore.QRect(530, 170, 321, 520))
+
 		# google events tabela
 		self.google_tabela.setObjectName("googleEventsTable")
 		self.google_tabela.setColumnCount(0)

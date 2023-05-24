@@ -90,11 +90,12 @@ class KoledarGoogle(KoledarService):
 		email_placnik = ''
 		cena_instrukcij = None
 
-		email_regex = r'Email osebe, ki bo plačala inštrukcije : </span><a><u><u>(.*?)</u></u></a>'
-		placnik_meil_match = re.search(email_regex, string)
-
-		if placnik_meil_match:
-			email_placnik = placnik_meil_match.group(1)
+		# pattern = r"Email osebe, ki bo plačala inštrukcije\s*:\s*<a><u><u>([^<]+)</u></u></a>"
+		print(string)
+		email_racun = re.search(r"Email osebe, ki bo plačala inštrukcije : </span><a><u><u>(\S+)</u></u></a>", string)
+		if email_racun:
+			email_placnik = email_racun.group(1).strip("</u></u></a>")
+			print(email_placnik)
 		else:
 			log.info("Email osebe, ki bo plačala inštrukcije not found in string")
 
