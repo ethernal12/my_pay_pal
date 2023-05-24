@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum, auto
 
+from core.domain.denar import DenarnaVrednost
 from core.domain.uporabnik import Uporabnik
 
 
@@ -12,7 +13,7 @@ class TipDogodka(str, Enum):
 @dataclass
 class Dogodek:
 	ime: str
-	cena: float
+	cena: DenarnaVrednost
 	tip: TipDogodka
 	zacetek: datetime
 	konec: datetime
