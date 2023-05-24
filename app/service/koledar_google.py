@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta
 
 import requests
 
+from core.domain.denar import DenarnaVrednost, Valute
 from core.domain.dogodek import Dogodek, TipDogodka
 from core.domain.uporabnik import Uporabnik
 from core.service.koledar_service import KoledarService
@@ -14,12 +15,13 @@ log = logging.getLogger(__name__)
 
 
 class InformacijeEventa:
-	def __init__(self, name: str, phone: str, email: str, email_placnik: str, cena_instrukcij: str):
+	def __init__(self, name: str, phone: str, email: str, email_placnik: str, cena_instrukcij: float, cena_valuta: str):
 		self.name = name
 		self.phone = phone
 		self.email = email
 		self.email_placnik = email_placnik
 		self.cena_instrukcij = cena_instrukcij
+		self.cena_valuta = cena_valuta
 
 
 class KoledarGoogle(KoledarService):
@@ -45,7 +47,14 @@ class KoledarGoogle(KoledarService):
 					match = acuity_id_pattern.search(string)
 					if match:
 						dobljene_informacije_dogodka = self._dobi_informacije_dogodka(string=string)
+						if dobljene_informacije_dogodka.cena_valuta == '$':
+							cena = DenarnaVrednost(vrednost=dobljene_informacije_dogodka.cena_instrukcij,
+							                       valuta=Valute.dolar)
+							cena = cena.pretvori(valuta=Valute.euro)
+						else:
 
+							cena = DenarnaVrednost(vrednost=dobljene_informacije_dogodka.cena_instrukcij,
+							                       valuta=Valute.euro)
 						uporabnik = Uporabnik(
 							ime=dobljene_informacije_dogodka.name,
 							priimek=dobljene_informacije_dogodka.name,
@@ -55,7 +64,7 @@ class KoledarGoogle(KoledarService):
 						)
 						dogodek = Dogodek(
 							ime=None,
-							cena=dobljene_informacije_dogodka.cena_instrukcij,
+							cena=cena,
 							tip=TipDogodka.INSTRUKCIJE,
 							zacetek=datetime.fromisoformat(event['start']['dateTime']),
 							konec=datetime.fromisoformat(event['end']['dateTime']),
@@ -79,11 +88,13 @@ class KoledarGoogle(KoledarService):
 		phone = ''
 		email = ''
 		email_placnik = ''
-		cena_instrukcij = ''
+		cena_instrukcij = None
 
-		match = re.search(r"Email osebe, ki bo plačala inštrukcije\s*:\s*([^\s<]+)", string)
-		if match:
-			email_placnik = match.group(1)
+		email_regex = r'Email osebe, ki bo plačala inštrukcije : </span><a><u><u>(.*?)</u></u></a>'
+		placnik_meil_match = re.search(email_regex, string)
+
+		if placnik_meil_match:
+			email_placnik = placnik_meil_match.group(1)
 		else:
 			log.info("Email osebe, ki bo plačala inštrukcije not found in string")
 
@@ -99,8 +110,14 @@ class KoledarGoogle(KoledarService):
 		if phone_match:
 			phone = phone_match.group(1)
 
-		cena_instrukcij2 = re.search(r"Price: €([\d.]+)", string)
-		if cena_instrukcij2:
-			cena_instrukcij = float(cena_instrukcij2.group(1))
+		cena_match = re.search(r"Price: (?:\$|€)([\d.]+)", string)
+		if cena_match:
+			cena_instrukcij = float(cena_match.group(1))
+
+		valuta_match = re.search(r"Price:\s*(\D+)", string)
+		if valuta_match:
+			cena_valuta = valuta_match.group(1)
+		else:
+			cena_valuta = None
 		return InformacijeEventa(name=name, phone=phone, email=email, email_placnik=email_placnik,
-		                         cena_instrukcij=cena_instrukcij)
+		                         cena_instrukcij=cena_instrukcij, cena_valuta=cena_valuta)
