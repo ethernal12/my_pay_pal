@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QTableWidgetItem, QLabel, QMessageBox, QPushButton
-
+from app import APP
 log = logging.getLogger(__name__)
 
 
