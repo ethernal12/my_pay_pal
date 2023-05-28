@@ -3,3 +3,4 @@ python-dotenv
 requests==2.29.0
 dependency-injector
 autologging
+pyqt5
