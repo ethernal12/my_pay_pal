@@ -9,4 +9,4 @@ Tabele se po pritisku tega gumba tudi obarvajo, za vsak e-mail naslov je dodelje
 Uporabniku tudi nato sporoči kaj se ne ujema in koliko., če se vsi stripe invoici ujemajo z google eventi, je poslano sporočilo "Vsi email naslovi imajo pravilne kvantitete med tabelami.".
 
 ## Inštalacija aplikacije:
-### Po kloniranju REPO se inštalirajo vse potrebne knjižnice z ukazom v terminalu pip install -r requirements.txt in aplikacija se lahko zažene z vstopom v folder app in ukazom v terminalu py GUI.py.
+### Po kloniranju REPO se inštalirajo vse potrebne knjižnice z ukazom v terminalu pip install -r requirements.txt in aplikacija se lahko zažene z vstopom v folder app in ukazom v terminalu py GUI.py. Ustvari se tudi .env datoteka, ki naj vsebuje vse podatke iz .env-sample datoteke.
